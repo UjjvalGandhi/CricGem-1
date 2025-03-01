@@ -1,0 +1,5 @@
+package com.cricgem
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
