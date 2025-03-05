@@ -1,0 +1,2 @@
+/Users/ujjvalgandhi/Desktop/battingapp-main-old/android/app/.cxx/RelWithDebInfo/1x4j1y12/x86/CMakeFiles/edit_cache.dir
+/Users/ujjvalgandhi/Desktop/battingapp-main-old/android/app/.cxx/RelWithDebInfo/1x4j1y12/x86/CMakeFiles/rebuild_cache.dir
