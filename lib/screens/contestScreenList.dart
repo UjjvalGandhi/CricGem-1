@@ -549,887 +549,891 @@ class _ContestMatchListState extends State<ContestMatchList> {
         designSize: const Size(360, 690), minTextAdapt: true);
 
     print("this is cId::${widget.cId}");
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        // Navigate to the login page when the back button is pressed
-        // if(widget.iscreatematch){
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (context) => ContentInside(
-        //         isCreateTeam:true,
-        //         time: widget.time,
-        //         CId: widget.cId,
-        //         matchName: widget.matchName,
-        //         Id: widget.Id,
-        //       ),
-        //     ),
-        //   );
-        // }
-        // else{
-        //   Navigator.pop(context);
-        // }
-        await Future.microtask(() {
-          // Check if the navigator can pop before trying to pop
-          // if(widget.isCreateTeam){
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContentInside(
-                isCreateTeam: true,
-                time: widget.time,
-                CId: widget.cId,
-                matchName: widget.matchName,
-                Id: widget.Id,
-              ),
-            ),
-            (route) => false,
-          );
-          // } else {
-          //   if (Navigator.canPop(context)) {
-          //     Navigator.pop(context);
-          //   } else {
-          //     print("No route to pop!");
-          //   }
+    return SafeArea(
+      bottom: true,
+      top: false,
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          // Navigate to the login page when the back button is pressed
+          // if(widget.iscreatematch){
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => ContentInside(
+          //         isCreateTeam:true,
+          //         time: widget.time,
+          //         CId: widget.cId,
+          //         matchName: widget.matchName,
+          //         Id: widget.Id,
+          //       ),
+          //     ),
+          //   );
           // }
-        });
-        // Navigator.pop(context);
-
-        // Return `true` if you want to indicate that the pop was handled manually.
-        // return true;
-      },
-      child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(63.0),
-            child: ClipRRect(
-                child: CustomAppBar(
-                    title: widget.matchName ?? '',
-                    // subtitle: formatRemainingTime(remainingTime),
-                    subtitle: widget.time ?? '',
-                    onBackPressed: () async => {
-                          await Future.microtask(() {
-                            // Check if the navigator can pop before trying to pop
-                            // if(widget.isCreateTeam){
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ContentInside(
-                                  isCreateTeam: true,
-                                  time: widget.time,
-                                  CId: widget.cId,
-                                  matchName: widget.matchName,
-                                  Id: widget.Id,
-                                ),
-                              ),
-                              (route) => false,
-                            );
-                            // } else {
-                            //   if (Navigator.canPop(context)) {
-                            //     Navigator.pop(context);
-                            //   } else {
-                            //     print("No route to pop!");
-                            //   }
-                            // }
-                          }),
-                        }
-                    // widget.iscreatematch ?
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ContentInside(
-                    //       isCreateTeam:true,
-                    //       time: widget.time,
-                    //       CId: widget.cId,
-                    //       matchName: widget.matchName,
-                    //       Id: widget.Id,
-                    //     ),
-                    //   ),
-                    // ) : Navigator.pop(context),
-                    // fetchWalletBalance: walletDisplay
-                    )),
-          ),
-          body: FutureBuilder<MyTeamLIstModel?>(
-              future: _futureDataTeam,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    color: const Color(0xffF0F1F5),
-                    child: const Center(child: CircularProgressIndicator()),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData ||
-                    snapshot.data?.data.isEmpty == true) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    color: const Color(0xffF0F1F5),
-                    child: Column(
-                      // crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(top: 350),
-                          child: Center(child: Text('No teams available')),
-                        ),
-                        // SizedBox(width: 150),
-                        Positioned(
-                          bottom: 110,
-                          left: 0,
-                          right: 0,
-                          child: Column(
-                            children: [
-                              // Other code...
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 50),
-                                child: Center(
-                                  child: Container(
-                                    height: 42,
-                                    width: 278,
-                                    // Set a fixed width or a responsive width as needed
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 0.5,
-                                          color: Colors.grey.shade400),
-                                      borderRadius: BorderRadius.circular(22),
-                                      color: Colors.white,
-                                    ),
-                                    child: Center(
-                                      child: InkWell(
-                                        onTap: () {
-                                          print(
-                                              "This is used in create team API: ${widget.Id}");
-                                          print("idddd: ${widget.cId}");
-                                          print(
-                                              "match name: ${widget.matchName}");
-                                          print(
-                                              'first team name:- ${widget.firstmatch}');
-                                          print(
-                                              'second team name:- ${widget.secMatch}');
-
-                                          // print('this is useed in create team api ........check 2  ${contestData.data!.contestDetails!.matchId}');
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CreateTeamScreen(
-                                                isMyTeam: true,
-                                                contestID: widget.cId,
-                                                amount: widget.amount,
-                                                currentuserids:
-                                                    widget.currentUserTeamIds,
-                                                Id: widget.Id,
-                                                // Id: "${contestData.data.contestDetails.id}",
-                                                matchName: widget.matchName,
-                                                firstMatch:
-                                                    "${widget.firstmatch}",
-                                                secMatch: "${widget.secMatch}",
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: SizedBox(
-                                          height: 25,
-                                          width: 136,
-                                          // Width for the button's content
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                "assets/createteam.png",
-                                                height: 18,
-                                              ),
-                                              const SizedBox(width: 7),
-                                              const Text(
-                                                "Create Team",
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+          // else{
+          //   Navigator.pop(context);
+          // }
+          await Future.microtask(() {
+            // Check if the navigator can pop before trying to pop
+            // if(widget.isCreateTeam){
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ContentInside(
+                  isCreateTeam: true,
+                  time: widget.time,
+                  CId: widget.cId,
+                  matchName: widget.matchName,
+                  Id: widget.Id,
+                ),
+              ),
+              (route) => false,
+            );
+            // } else {
+            //   if (Navigator.canPop(context)) {
+            //     Navigator.pop(context);
+            //   } else {
+            //     print("No route to pop!");
+            //   }
+            // }
+          });
+          // Navigator.pop(context);
+      
+          // Return `true` if you want to indicate that the pop was handled manually.
+          // return true;
+        },
+        child: Scaffold(
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(63.0),
+              child: ClipRRect(
+                  child: CustomAppBar(
+                      title: widget.matchName ?? '',
+                      // subtitle: formatRemainingTime(remainingTime),
+                      subtitle: widget.time ?? '',
+                      onBackPressed: () async => {
+                            await Future.microtask(() {
+                              // Check if the navigator can pop before trying to pop
+                              // if(widget.isCreateTeam){
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ContentInside(
+                                    isCreateTeam: true,
+                                    time: widget.time,
+                                    CId: widget.cId,
+                                    matchName: widget.matchName,
+                                    Id: widget.Id,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                } else {
-                  final myTeamData = snapshot.data!.data;
-                  return SizedBox(
-                      child: Stack(children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 17),
-                      // padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                (route) => false,
+                              );
+                              // } else {
+                              //   if (Navigator.canPop(context)) {
+                              //     Navigator.pop(context);
+                              //   } else {
+                              //     print("No route to pop!");
+                              //   }
+                              // }
+                            }),
+                          }
+                      // widget.iscreatematch ?
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => ContentInside(
+                      //       isCreateTeam:true,
+                      //       time: widget.time,
+                      //       CId: widget.cId,
+                      //       matchName: widget.matchName,
+                      //       Id: widget.Id,
+                      //     ),
+                      //   ),
+                      // ) : Navigator.pop(context),
+                      // fetchWalletBalance: walletDisplay
+                      )),
+            ),
+            body: FutureBuilder<MyTeamLIstModel?>(
+                future: _futureDataTeam,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       color: const Color(0xffF0F1F5),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Column(
-                              children: myTeamData.asMap().entries.map((entry) {
-                                int index = entry.key;
-                                var team = entry.value;
-                                String lastFourDigits =
-                                    team.id.substring(team.id.length - 4);
-                                String teamLabel = 'T${index + 1}';
-                                String appId =
-                                    "BOSS $lastFourDigits ($teamLabel)";
-                                bool isSelected =
-                                    _selectedTeamIds.contains(team.id);
-                                print("team ids from listview :-${team.id}");
-                                // bool isAlreadyPlaying = widget.currentUserTeamIds!.contains(team.id);
-                                // bool isAlreadyPlaying = widget.currentUserTeamIds?.contains(team.id) ?? false;
-                                bool isAlreadyPlaying =
-                                    currentUserTeamIds.contains(team.id);
-
-                                print(
-                                    "already selected team ids:- ${widget.currentUserTeamIds}");
-                                print(
-                                    "already playing teams :-$isAlreadyPlaying");
-                                // bool isAlreadyPlaying = widget.currentUserTeamIds.contains(team.id);
-                                return Column(
-                                  children: [
-                                    SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.02),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: () {
-                                              if (isAlreadyPlaying) {
-                                                // Show Snackbar message if the team is already playing
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                        'Team ($teamLabel) is already joined!'),
-                                                    duration: const Duration(
-                                                        seconds: 2),
-                                                  ),
-                                                );
-                                              } else {
-                                                // Navigate to MyTeamEdit if the team is not already playing
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MyTeamEdit(
-                                                      teamId: team.id,
-                                                      appId: appId,
-                                                      matchName:
-                                                          widget.matchName,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) => MyTeamEdit(
-                                              //       teamId: team.id,
-                                              //       appId: appId,
-                                              //       matchName: widget.matchName,
-                                              //     ),
-                                              //   ),
-                                              // );
-                                            },
-                                            child: Stack(
-                                              alignment: Alignment.bottomCenter,
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.all(
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .width *
-                                                          0.04),
-                                                  height: 150.h,
-                                                  decoration: BoxDecoration(
-                                                    color: isAlreadyPlaying
-                                                        ? Colors.grey.shade400
-                                                        : Colors
-                                                            .white, // color: Colors.white,
-                                                    border: Border.all(
-                                                        color: Colors
-                                                            .grey.shade300),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.r),
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "BOSS $lastFourDigits ($teamLabel)",
-                                                            style: TextStyle(
-                                                              fontSize: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  0.04,
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
-                                                            children: [
-                                                              Image.network(
-                                                                team.team1Logo ??
-                                                                    'https://via.placeholder.com/26', // Placeholder URL
-                                                                height: 30,
-                                                                errorBuilder:
-                                                                    (context,
-                                                                        error,
-                                                                        stackTrace) {
-                                                                  return Image.asset(
-                                                                      'assets/remove.png',
-                                                                      height:
-                                                                          26); // Default image
-                                                                },
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              const Text("vs"),
-                                                              const SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Image.network(
-                                                                team.team2Logo ??
-                                                                    'https://via.placeholder.com/26', // Placeholder URL
-                                                                height: 30,
-                                                                errorBuilder:
-                                                                    (context,
-                                                                        error,
-                                                                        stackTrace) {
-                                                                  return Image.asset(
-                                                                      'assets/default_team_image.png',
-                                                                      height:
-                                                                          26); // Default image
-                                                                },
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.01),
-                                                      Divider(
-                                                        height: 1,
-                                                        color: Colors
-                                                            .grey.shade300,
-                                                      ),
-                                                      SizedBox(
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.012),
-                                                      SizedBox(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.07,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            // Column(
-                                                            //   children: [
-                                                            //     Normal2Text(
-                                                            //       color: Colors.black,
-                                                            //       text: "Points",
-                                                            //     ),
-                                                            //     Text(
-                                                            //       totalpoints?.toString() ?? "0",
-                                                            //       // "100",
-                                                            //       style: TextStyle(
-                                                            //         fontSize: MediaQuery.of(context).size.width * 0.04,
-                                                            //         color: Colors.black,
-                                                            //         fontWeight: FontWeight.w600,
-                                                            //       ),
-                                                            //     ),
-                                                            //   ],
-                                                            // ),
-                                                            Row(
-                                                              children: [
-                                                                Container(
-                                                                  margin:
-                                                                      EdgeInsets
-                                                                          .only(
-                                                                    right: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.05,
-                                                                  ),
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.07,
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.2,
-                                                                  child: Column(
-                                                                    children: [
-                                                                      SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.05,
-                                                                        width: MediaQuery.of(context).size.width *
-                                                                            0.1,
-                                                                        child: Image
-                                                                            .network(
-                                                                          team.captain?.playerPhoto ??
-                                                                              'https://via.placeholder.com/26',
-                                                                          height:
-                                                                              MediaQuery.of(context).size.height * 0.04,
-                                                                          errorBuilder: (context,
-                                                                              error,
-                                                                              stackTrace) {
-                                                                            return Image.asset(
-                                                                              'assets/dummy_player.png',
-                                                                              height: MediaQuery.of(context).size.height * 0.04,
-                                                                            );
-                                                                          },
-                                                                        ),
-                                                                      ),
-                                                                      Container(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.02,
-                                                                        width: MediaQuery.of(context).size.width *
-                                                                            0.2,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              const Color(0xffF0F1F5),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(2.r),
-                                                                        ),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            "${team.captain?.playerName}",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: MediaQuery.of(context).size.width * 0.03,
-                                                                              color: Colors.black,
-                                                                              fontWeight: FontWeight.w400,
-                                                                            ),
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.08,
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.2,
-                                                                  child: Column(
-                                                                    children: [
-                                                                      SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.05,
-                                                                        width: MediaQuery.of(context).size.width *
-                                                                            0.1,
-                                                                        child: Image
-                                                                            .network(
-                                                                          team.vicecaptain?.playerPhoto ??
-                                                                              'https://via.placeholder.com/26',
-                                                                          height:
-                                                                              MediaQuery.of(context).size.height * 0.04,
-                                                                          errorBuilder: (context,
-                                                                              error,
-                                                                              stackTrace) {
-                                                                            return Image.asset(
-                                                                              'assets/dummy_player.png',
-                                                                              height: MediaQuery.of(context).size.height * 0.04,
-                                                                            );
-                                                                          },
-                                                                        ),
-                                                                      ),
-                                                                      Container(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.02,
-                                                                        width: MediaQuery.of(context).size.width *
-                                                                            0.2,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              const Color(0xffF0F1F5),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(2.r),
-                                                                        ),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            "${team.vicecaptain?.playerName}",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: MediaQuery.of(context).size.width * 0.03,
-                                                                              color: Colors.black,
-                                                                              fontWeight: FontWeight.w400,
-                                                                            ),
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
+                      child: const Center(child: CircularProgressIndicator()),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData ||
+                      snapshot.data?.data.isEmpty == true) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      color: const Color(0xffF0F1F5),
+                      child: Column(
+                        // crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 350),
+                            child: Center(child: Text('No teams available')),
+                          ),
+                          // SizedBox(width: 150),
+                          Positioned(
+                            bottom: 110,
+                            left: 0,
+                            right: 0,
+                            child: Column(
+                              children: [
+                                // Other code...
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 50),
+                                  child: Center(
+                                    child: Container(
+                                      height: 42,
+                                      width: 278,
+                                      // Set a fixed width or a responsive width as needed
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 0.5,
+                                            color: Colors.grey.shade400),
+                                        borderRadius: BorderRadius.circular(22),
+                                        color: Colors.white,
+                                      ),
+                                      child: Center(
+                                        child: InkWell(
+                                          onTap: () {
+                                            print(
+                                                "This is used in create team API: ${widget.Id}");
+                                            print("idddd: ${widget.cId}");
+                                            print(
+                                                "match name: ${widget.matchName}");
+                                            print(
+                                                'first team name:- ${widget.firstmatch}');
+                                            print(
+                                                'second team name:- ${widget.secMatch}');
+      
+                                            // print('this is useed in create team api ........check 2  ${contestData.data!.contestDetails!.matchId}');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CreateTeamScreen(
+                                                  isMyTeam: true,
+                                                  contestID: widget.cId,
+                                                  amount: widget.amount,
+                                                  currentuserids:
+                                                      widget.currentUserTeamIds,
+                                                  Id: widget.Id,
+                                                  // Id: "${contestData.data.contestDetails.id}",
+                                                  matchName: widget.matchName,
+                                                  firstMatch:
+                                                      "${widget.firstmatch}",
+                                                  secMatch: "${widget.secMatch}",
                                                 ),
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.04),
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.05,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff010101)
-                                                            .withOpacity(0.03),
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      bottomRight:
-                                                          Radius.circular(20.r),
-                                                      bottomLeft:
-                                                          Radius.circular(20.r),
-                                                    ),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Normal3Text(
-                                                        color: Colors.black,
-                                                        text:
-                                                            "WK ${team.wicketkeeper}",
-                                                      ),
-                                                      Normal3Text(
-                                                        color: Colors.black,
-                                                        text:
-                                                            "BAT ${team.batsman}",
-                                                      ),
-                                                      Normal3Text(
-                                                        color: Colors.black,
-                                                        text:
-                                                            "AR ${team.allrounder}",
-                                                      ),
-                                                      Normal3Text(
-                                                        color: Colors.black,
-                                                        text:
-                                                            "BOWL ${team.bowler}",
-                                                      ),
-                                                    ],
+                                              ),
+                                            );
+                                          },
+                                          child: SizedBox(
+                                            height: 25,
+                                            width: 136,
+                                            // Width for the button's content
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  "assets/createteam.png",
+                                                  height: 18,
+                                                ),
+                                                const SizedBox(width: 7),
+                                                const Text(
+                                                  "Create Team",
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    final myTeamData = snapshot.data!.data;
+                    return SizedBox(
+                        child: Stack(children: [
+                      Container(
+                        padding: const EdgeInsets.only(left: 17),
+                        // padding: EdgeInsets.symmetric(horizontal: 15.w),
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        color: const Color(0xffF0F1F5),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Column(
+                                children: myTeamData.asMap().entries.map((entry) {
+                                  int index = entry.key;
+                                  var team = entry.value;
+                                  String lastFourDigits =
+                                      team.id.substring(team.id.length - 4);
+                                  String teamLabel = 'T${index + 1}';
+                                  String appId =
+                                      "BOSS $lastFourDigits ($teamLabel)";
+                                  bool isSelected =
+                                      _selectedTeamIds.contains(team.id);
+                                  print("team ids from listview :-${team.id}");
+                                  // bool isAlreadyPlaying = widget.currentUserTeamIds!.contains(team.id);
+                                  // bool isAlreadyPlaying = widget.currentUserTeamIds?.contains(team.id) ?? false;
+                                  bool isAlreadyPlaying =
+                                      currentUserTeamIds.contains(team.id);
+      
+                                  print(
+                                      "already selected team ids:- ${widget.currentUserTeamIds}");
+                                  print(
+                                      "already playing teams :-$isAlreadyPlaying");
+                                  // bool isAlreadyPlaying = widget.currentUserTeamIds.contains(team.id);
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                          height:
+                                              MediaQuery.of(context).size.height *
                                                   0.02),
-                                          child: InkWell(
-                                            onTap: () {
-                                              if (isAlreadyPlaying) {
-                                                // Show Snackbar message if the team is already playing
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                        'Team ($teamLabel) is already joined!'),
-                                                    duration: const Duration(
-                                                        seconds: 2),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                if (isAlreadyPlaying) {
+                                                  // Show Snackbar message if the team is already playing
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                          'Team ($teamLabel) is already joined!'),
+                                                      duration: const Duration(
+                                                          seconds: 2),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  // Navigate to MyTeamEdit if the team is not already playing
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MyTeamEdit(
+                                                        teamId: team.id,
+                                                        appId: appId,
+                                                        matchName:
+                                                            widget.matchName,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) => MyTeamEdit(
+                                                //       teamId: team.id,
+                                                //       appId: appId,
+                                                //       matchName: widget.matchName,
+                                                //     ),
+                                                //   ),
+                                                // );
+                                              },
+                                              child: Stack(
+                                                alignment: Alignment.bottomCenter,
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.all(
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.04),
+                                                    height: 150.h,
+                                                    decoration: BoxDecoration(
+                                                      color: isAlreadyPlaying
+                                                          ? Colors.grey.shade400
+                                                          : Colors
+                                                              .white, // color: Colors.white,
+                                                      border: Border.all(
+                                                          color: Colors
+                                                              .grey.shade300),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.r),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              "BOSS $lastFourDigits ($teamLabel)",
+                                                              style: TextStyle(
+                                                                fontSize: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.04,
+                                                                color:
+                                                                    Colors.black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                Image.network(
+                                                                  team.team1Logo ??
+                                                                      'https://via.placeholder.com/26', // Placeholder URL
+                                                                  height: 30,
+                                                                  errorBuilder:
+                                                                      (context,
+                                                                          error,
+                                                                          stackTrace) {
+                                                                    return Image.asset(
+                                                                        'assets/remove.png',
+                                                                        height:
+                                                                            26); // Default image
+                                                                  },
+                                                                ),
+                                                                const SizedBox(
+                                                                  width: 5,
+                                                                ),
+                                                                const Text("vs"),
+                                                                const SizedBox(
+                                                                  width: 5,
+                                                                ),
+                                                                Image.network(
+                                                                  team.team2Logo ??
+                                                                      'https://via.placeholder.com/26', // Placeholder URL
+                                                                  height: 30,
+                                                                  errorBuilder:
+                                                                      (context,
+                                                                          error,
+                                                                          stackTrace) {
+                                                                    return Image.asset(
+                                                                        'assets/default_team_image.png',
+                                                                        height:
+                                                                            26); // Default image
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.01),
+                                                        Divider(
+                                                          height: 1,
+                                                          color: Colors
+                                                              .grey.shade300,
+                                                        ),
+                                                        SizedBox(
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.012),
+                                                        SizedBox(
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.07,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              // Column(
+                                                              //   children: [
+                                                              //     Normal2Text(
+                                                              //       color: Colors.black,
+                                                              //       text: "Points",
+                                                              //     ),
+                                                              //     Text(
+                                                              //       totalpoints?.toString() ?? "0",
+                                                              //       // "100",
+                                                              //       style: TextStyle(
+                                                              //         fontSize: MediaQuery.of(context).size.width * 0.04,
+                                                              //         color: Colors.black,
+                                                              //         fontWeight: FontWeight.w600,
+                                                              //       ),
+                                                              //     ),
+                                                              //   ],
+                                                              // ),
+                                                              Row(
+                                                                children: [
+                                                                  Container(
+                                                                    margin:
+                                                                        EdgeInsets
+                                                                            .only(
+                                                                      right: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.05,
+                                                                    ),
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height *
+                                                                        0.07,
+                                                                    width: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.2,
+                                                                    child: Column(
+                                                                      children: [
+                                                                        SizedBox(
+                                                                          height: MediaQuery.of(context).size.height *
+                                                                              0.05,
+                                                                          width: MediaQuery.of(context).size.width *
+                                                                              0.1,
+                                                                          child: Image
+                                                                              .network(
+                                                                            team.captain?.playerPhoto ??
+                                                                                'https://via.placeholder.com/26',
+                                                                            height:
+                                                                                MediaQuery.of(context).size.height * 0.04,
+                                                                            errorBuilder: (context,
+                                                                                error,
+                                                                                stackTrace) {
+                                                                              return Image.asset(
+                                                                                'assets/dummy_player.png',
+                                                                                height: MediaQuery.of(context).size.height * 0.04,
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        ),
+                                                                        Container(
+                                                                          height: MediaQuery.of(context).size.height *
+                                                                              0.02,
+                                                                          width: MediaQuery.of(context).size.width *
+                                                                              0.2,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                const Color(0xffF0F1F5),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(2.r),
+                                                                          ),
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Text(
+                                                                              "${team.captain?.playerName}",
+                                                                              style:
+                                                                                  TextStyle(
+                                                                                fontSize: MediaQuery.of(context).size.width * 0.03,
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.w400,
+                                                                              ),
+                                                                              textAlign:
+                                                                                  TextAlign.center,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height *
+                                                                        0.08,
+                                                                    width: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.2,
+                                                                    child: Column(
+                                                                      children: [
+                                                                        SizedBox(
+                                                                          height: MediaQuery.of(context).size.height *
+                                                                              0.05,
+                                                                          width: MediaQuery.of(context).size.width *
+                                                                              0.1,
+                                                                          child: Image
+                                                                              .network(
+                                                                            team.vicecaptain?.playerPhoto ??
+                                                                                'https://via.placeholder.com/26',
+                                                                            height:
+                                                                                MediaQuery.of(context).size.height * 0.04,
+                                                                            errorBuilder: (context,
+                                                                                error,
+                                                                                stackTrace) {
+                                                                              return Image.asset(
+                                                                                'assets/dummy_player.png',
+                                                                                height: MediaQuery.of(context).size.height * 0.04,
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        ),
+                                                                        Container(
+                                                                          height: MediaQuery.of(context).size.height *
+                                                                              0.02,
+                                                                          width: MediaQuery.of(context).size.width *
+                                                                              0.2,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                const Color(0xffF0F1F5),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(2.r),
+                                                                          ),
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Text(
+                                                                              "${team.vicecaptain?.playerName}",
+                                                                              style:
+                                                                                  TextStyle(
+                                                                                fontSize: MediaQuery.of(context).size.width * 0.03,
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.w400,
+                                                                              ),
+                                                                              textAlign:
+                                                                                  TextAlign.center,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                );
-                                              } else {
-                                                setState(() {
-                                                  if (_selectedTeamIds
-                                                      .contains(team.id)) {
-                                                    _selectedTeamIds
-                                                        .remove(team.id);
-                                                  } else {
-                                                    _selectedTeamIds
-                                                        .add(team.id);
-                                                  }
-                                                  updateButtonState();
-                                                });
-                                              }
-                                              // setState(() {
-                                              //   if (_selectedTeamIds.contains(team.id)) {
-                                              //     _selectedTeamIds.remove(team.id);
-                                              //   } else {
-                                              //     _selectedTeamIds.add(team.id);
-                                              //   }
-                                              //   updateButtonState();
-                                              // });
-                                            },
-                                            child: Checkbox(
-                                              activeColor:
-                                                  const Color(0xff1D1459),
-                                              checkColor: Colors.white,
-                                              value: isSelected,
-                                              // onChanged: (bool? value) {
-                                              onChanged: isAlreadyPlaying
-                                                  ? null
-                                                  : (bool? value) {
-                                                      setState(() {
-                                                        if (value ?? false) {
-                                                          _selectedTeamIds
-                                                              .add(team.id);
-                                                        } else {
-                                                          _selectedTeamIds
-                                                              .remove(team.id);
-                                                        }
-                                                        updateButtonState();
-                                                      });
-                                                    },
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            MediaQuery.of(context)
+                                                                    .size
+                                                                    .width *
+                                                                0.04),
+                                                    height: MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.05,
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          const Color(0xff010101)
+                                                              .withOpacity(0.03),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        bottomRight:
+                                                            Radius.circular(20.r),
+                                                        bottomLeft:
+                                                            Radius.circular(20.r),
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Normal3Text(
+                                                          color: Colors.black,
+                                                          text:
+                                                              "WK ${team.wicketkeeper}",
+                                                        ),
+                                                        Normal3Text(
+                                                          color: Colors.black,
+                                                          text:
+                                                              "BAT ${team.batsman}",
+                                                        ),
+                                                        Normal3Text(
+                                                          color: Colors.black,
+                                                          text:
+                                                              "AR ${team.allrounder}",
+                                                        ),
+                                                        Normal3Text(
+                                                          color: Colors.black,
+                                                          text:
+                                                              "BOWL ${team.bowler}",
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                );
-                              }).toList(),
-                            ),
-                            const SizedBox(
-                              height: 90,
-                            ),
-                            // SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-                          ],
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.02),
+                                            child: InkWell(
+                                              onTap: () {
+                                                if (isAlreadyPlaying) {
+                                                  // Show Snackbar message if the team is already playing
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                          'Team ($teamLabel) is already joined!'),
+                                                      duration: const Duration(
+                                                          seconds: 2),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  setState(() {
+                                                    if (_selectedTeamIds
+                                                        .contains(team.id)) {
+                                                      _selectedTeamIds
+                                                          .remove(team.id);
+                                                    } else {
+                                                      _selectedTeamIds
+                                                          .add(team.id);
+                                                    }
+                                                    updateButtonState();
+                                                  });
+                                                }
+                                                // setState(() {
+                                                //   if (_selectedTeamIds.contains(team.id)) {
+                                                //     _selectedTeamIds.remove(team.id);
+                                                //   } else {
+                                                //     _selectedTeamIds.add(team.id);
+                                                //   }
+                                                //   updateButtonState();
+                                                // });
+                                              },
+                                              child: Checkbox(
+                                                activeColor:
+                                                    const Color(0xff1D1459),
+                                                checkColor: Colors.white,
+                                                value: isSelected,
+                                                // onChanged: (bool? value) {
+                                                onChanged: isAlreadyPlaying
+                                                    ? null
+                                                    : (bool? value) {
+                                                        setState(() {
+                                                          if (value ?? false) {
+                                                            _selectedTeamIds
+                                                                .add(team.id);
+                                                          } else {
+                                                            _selectedTeamIds
+                                                                .remove(team.id);
+                                                          }
+                                                          updateButtonState();
+                                                        });
+                                                      },
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                              const SizedBox(
+                                height: 90,
+                              ),
+                              // SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-
-                    Positioned(
-                      bottom: 0,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        height: 57.h,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.white,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              height: 33.h,
-                              width: 70.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: _isButtonEnabled
-                                    ? Colors.green
-                                    : Colors.grey,
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  if (_isButtonEnabled && !_isLoading) {
-                                    debugPrint(
-                                        "Join button tapped with selected team ids: $_selectedTeamIds");
-                                    joinContest();
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Center(
-                                          child: Text('Select Team First'),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
-                                // child: Center(
-                                //   child: _isLoading
-                                //       ? const CircularProgressIndicator(strokeWidth: 1,
-                                //     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                //   )
-                                //       :const Text(
-                                //     "Join",
-                                //     style: TextStyle(
-                                //       color: Colors.white,
-                                //       fontWeight: FontWeight.w500,
-                                //     ),
-                                //   ),
-                                // ),
-                                child: Center(
-                                  child: _isLoading
-                                      ? const SizedBox(
-                                          width: 16, // Set a small width
-                                          height: 16, // Set a small height
-                                          child: CircularProgressIndicator(
-                                            strokeWidth:
-                                                2, // Adjust the thickness of the indicator
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    Colors.white),
-                                          ),
-                                        )
-                                      : const Text(
-                                          "Join",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
+      
+                      Positioned(
+                        bottom: 0,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          height: 50.h,
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                height: 34.h,
+                                width: 70.w,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: _isButtonEnabled
+                                      ? Colors.green
+                                      : Colors.grey,
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    if (_isButtonEnabled && !_isLoading) {
+                                      debugPrint(
+                                          "Join button tapped with selected team ids: $_selectedTeamIds");
+                                      joinContest();
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Center(
+                                            child: Text('Select Team First'),
                                           ),
                                         ),
+                                      );
+                                    }
+                                  },
+                                  // child: Center(
+                                  //   child: _isLoading
+                                  //       ? const CircularProgressIndicator(strokeWidth: 1,
+                                  //     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  //   )
+                                  //       :const Text(
+                                  //     "Join",
+                                  //     style: TextStyle(
+                                  //       color: Colors.white,
+                                  //       fontWeight: FontWeight.w500,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  child: Center(
+                                    child: _isLoading
+                                        ? const SizedBox(
+                                            width: 16, // Set a small width
+                                            height: 16, // Set a small height
+                                            child: CircularProgressIndicator(
+                                              strokeWidth:
+                                                  2, // Adjust the thickness of the indicator
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.white),
+                                            ),
+                                          )
+                                        : const Text(
+                                            "Join",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    // Positioned(
-                    //   bottom: 50,
-                    //   left: 0,
-                    //   right: 0,
-                    //   child: Column(
-                    //     children: [
-                    //       // Other code...
-                    //       Padding(
-                    //         padding: const EdgeInsets.only(bottom: 30),
-                    //         child: Center(
-                    //           child: Container(
-                    //             height: 42,
-                    //             width: 278,
-                    //             // Set a fixed width or a responsive width as needed
-                    //             padding: const EdgeInsets.symmetric(horizontal: 10),
-                    //             decoration: BoxDecoration(
-                    //               border: Border.all(
-                    //                   width: 0.5, color: Colors.grey.shade400),
-                    //               borderRadius: BorderRadius.circular(22),
-                    //               color: Colors.white,
-                    //             ),
-                    //             child: Center(
-                    //               child: InkWell(
-                    //                 onTap: () {
-                    //                   print(
-                    //                       "This is used in create team API: ${widget.Id}");
-                    //                   print(
-                    //                       "idddd: ${widget.cId}");
-                    //                   print("match name: ${widget.matchName}");
-                    //                   print('first team name:- ${widget.firstmatch}');
-                    //                   print('second team name:- ${widget.secMatch}');
-                    //
-                    //                   // print('this is useed in create team api ........check 2  ${contestData.data!.contestDetails!.matchId}');
-                    //                   Navigator.push(
-                    //                     context,
-                    //                     MaterialPageRoute(
-                    //                       builder: (context) =>
-                    //                           CreateTeamScreen(
-                    //                             isMyTeam:true,
-                    //                             contestID: widget.cId,
-                    //                             amount:widget.amount,
-                    //                             currentuserids: widget.currentUserTeamIds,
-                    //                             Id: widget.Id,
-                    //                             // Id: "${contestData.data.contestDetails.id}",
-                    //                             matchName: widget.matchName,
-                    //                             firstMatch: "${widget.firstmatch}",
-                    //                             secMatch: "${widget.secMatch}",
-                    //                           ),
-                    //                     ),
-                    //                   );
-                    //                 },
-                    //                 child: SizedBox(
-                    //                   height: 25,
-                    //                   width: 136,
-                    //                   // Width for the button's content
-                    //                   child: Row(
-                    //                     mainAxisAlignment:
-                    //                     MainAxisAlignment.center,
-                    //                     children: [
-                    //                       Image.asset(
-                    //                         "assets/createteam.png",
-                    //                         height: 18,
-                    //                       ),
-                    //                       const SizedBox(width: 7),
-                    //                       const Text(
-                    //                         "Create Team",
-                    //                         style: TextStyle(
-                    //                           fontSize: 14,
-                    //                           fontWeight: FontWeight.w600,
-                    //                           color: Colors.black,
-                    //                         ),
-                    //                       ),
-                    //                     ],
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // )
-                  ]));
-                }
-              })),
+                      // Positioned(
+                      //   bottom: 50,
+                      //   left: 0,
+                      //   right: 0,
+                      //   child: Column(
+                      //     children: [
+                      //       // Other code...
+                      //       Padding(
+                      //         padding: const EdgeInsets.only(bottom: 30),
+                      //         child: Center(
+                      //           child: Container(
+                      //             height: 42,
+                      //             width: 278,
+                      //             // Set a fixed width or a responsive width as needed
+                      //             padding: const EdgeInsets.symmetric(horizontal: 10),
+                      //             decoration: BoxDecoration(
+                      //               border: Border.all(
+                      //                   width: 0.5, color: Colors.grey.shade400),
+                      //               borderRadius: BorderRadius.circular(22),
+                      //               color: Colors.white,
+                      //             ),
+                      //             child: Center(
+                      //               child: InkWell(
+                      //                 onTap: () {
+                      //                   print(
+                      //                       "This is used in create team API: ${widget.Id}");
+                      //                   print(
+                      //                       "idddd: ${widget.cId}");
+                      //                   print("match name: ${widget.matchName}");
+                      //                   print('first team name:- ${widget.firstmatch}');
+                      //                   print('second team name:- ${widget.secMatch}');
+                      //
+                      //                   // print('this is useed in create team api ........check 2  ${contestData.data!.contestDetails!.matchId}');
+                      //                   Navigator.push(
+                      //                     context,
+                      //                     MaterialPageRoute(
+                      //                       builder: (context) =>
+                      //                           CreateTeamScreen(
+                      //                             isMyTeam:true,
+                      //                             contestID: widget.cId,
+                      //                             amount:widget.amount,
+                      //                             currentuserids: widget.currentUserTeamIds,
+                      //                             Id: widget.Id,
+                      //                             // Id: "${contestData.data.contestDetails.id}",
+                      //                             matchName: widget.matchName,
+                      //                             firstMatch: "${widget.firstmatch}",
+                      //                             secMatch: "${widget.secMatch}",
+                      //                           ),
+                      //                     ),
+                      //                   );
+                      //                 },
+                      //                 child: SizedBox(
+                      //                   height: 25,
+                      //                   width: 136,
+                      //                   // Width for the button's content
+                      //                   child: Row(
+                      //                     mainAxisAlignment:
+                      //                     MainAxisAlignment.center,
+                      //                     children: [
+                      //                       Image.asset(
+                      //                         "assets/createteam.png",
+                      //                         height: 18,
+                      //                       ),
+                      //                       const SizedBox(width: 7),
+                      //                       const Text(
+                      //                         "Create Team",
+                      //                         style: TextStyle(
+                      //                           fontSize: 14,
+                      //                           fontWeight: FontWeight.w600,
+                      //                           color: Colors.black,
+                      //                         ),
+                      //                       ),
+                      //                     ],
+                      //                   ),
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // )
+                    ]));
+                  }
+                })),
+      ),
     );
   }
 }

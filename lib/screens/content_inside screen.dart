@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:batting_app/widget/appbar_for_team.dart';
+import 'package:batting_app/widget/contest_bar.dart';
 import 'package:flutter/material.dart';
 import '../db/app_db.dart';
 import 'package:http/http.dart' as http;
@@ -44,6 +45,21 @@ class ContentInside extends StatefulWidget {
   @override
   State<ContentInside> createState() => _ContentInsideState();
 }
+
+class ContestCategory {
+  final String name;
+  final int count;
+
+  ContestCategory({required this.name, required this.count});
+}
+
+List<ContestCategory> categories = [
+  ContestCategory(name: 'Mega Contest', count: 1),
+  ContestCategory(name: 'Trending Now', count: 8),
+  ContestCategory(name: 'Only For Beginners', count: 1),
+  ContestCategory(name: 'Multiplier Contests', count: 3),
+];
+
 
 class _ContentInsideState extends State<ContentInside>
     with SingleTickerProviderStateMixin {
@@ -1735,7 +1751,7 @@ class _ContentInsideState extends State<ContentInside>
                         ],
                       ),
                       Positioned(
-                        bottom: 110,
+                        bottom: 140,
                         left: 0,
                         right: 0,
                         child: Column(
@@ -1795,23 +1811,61 @@ class _ContentInsideState extends State<ContentInside>
                                       },
                                       child: SizedBox(
                                         height: 25,
-                                        width: 136,
                                         // Width for the button's content
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                              MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Image.asset(
-                                              "assets/createteam.png",
-                                              height: 18,
+                                            InkWell(
+                                              onTap: () {
+                                                showCustomPositionedDialog(context);
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset("assets/contest.png", height: 18),
+                                                  const SizedBox(width: 7),
+                                                  const Text(
+                                                    "Contests",
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            const SizedBox(width: 7),
-                                            const Text(
-                                              "Create Team",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black,
+                                            Text('|'),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => CreateTeamScreen(
+                                                      isContestScreen: true,
+                                                      Id: widget.Id,
+                                                      matchName: widget.MatchName,
+                                                      firstMatch: widget.firstMatch,
+                                                      secMatch: widget.secMatch,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset("assets/createteam.png", height: 18),
+                                                  const SizedBox(width: 7),
+                                                  const Text(
+                                                    "Create Team",
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],

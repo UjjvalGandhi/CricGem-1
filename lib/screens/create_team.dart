@@ -529,531 +529,535 @@ class _CreateTeamScreenState extends State<CreateTeamScreen>
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
 
-    return PopScope(
-      canPop: false, // Prevent the default back action
-      onPopInvokedWithResult: (didPop, result) async {
-        await Future.microtask(() async {
-          if (team1PlayerCount > 0 || team2PlayerCount > 0) {
-            await _showExitConfirmationDialog(context);
-          } else {
-            if (widget.isJoinContestScreen) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ContentInside(
-                    isCreateTeam: true,
-                    time: widget.time,
-                    CId: widget.contestID,
-                    matchName: widget.matchName,
-                    Id: widget.matchId,
-                  ),
-                ),
-                (route) => false, // Removes all previous routes.
-              );
-            } else if (widget.isContestScreen) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => IndVsSaScreens(
-                      IsCreateTeamScreen: true,
-                      Id: widget.Id,
-                      matchName: widget.matchName),
-                ),
-                (route) => false, // Removes all previous routes.
-              );
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: PopScope(
+        canPop: false, // Prevent the default back action
+        onPopInvokedWithResult: (didPop, result) async {
+          await Future.microtask(() async {
+            if (team1PlayerCount > 0 || team2PlayerCount > 0) {
+              await _showExitConfirmationDialog(context);
             } else {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ContestMatchList(
-                    iscreatematch: true,
-                    firstmatch: "${widget.firstMatch}",
-                    secMatch: "${widget.secMatch}",
-                    matchName: "${widget.matchName}",
-                    cId: "${widget.contestID}",
-                    Id: "${widget.Id}",
-                    amount: "${widget.amount}",
-                    currentUserTeamIds: widget.currentuserids!
-                        .map((teamId) => teamId.split('(')[0])
-                        .toList(), // Extracting team ID before '('
+              if (widget.isJoinContestScreen) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContentInside(
+                      isCreateTeam: true,
+                      time: widget.time,
+                      CId: widget.contestID,
+                      matchName: widget.matchName,
+                      Id: widget.matchId,
+                    ),
                   ),
-                ),
-                (route) => false, // Removes all previous routes.
-              );
+                  (route) => false, // Removes all previous routes.
+                );
+              } else if (widget.isContestScreen) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => IndVsSaScreens(
+                        IsCreateTeamScreen: true,
+                        Id: widget.Id,
+                        matchName: widget.matchName),
+                  ),
+                  (route) => false, // Removes all previous routes.
+                );
+              } else {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContestMatchList(
+                      iscreatematch: true,
+                      firstmatch: "${widget.firstMatch}",
+                      secMatch: "${widget.secMatch}",
+                      matchName: "${widget.matchName}",
+                      cId: "${widget.contestID}",
+                      Id: "${widget.Id}",
+                      amount: "${widget.amount}",
+                      currentUserTeamIds: widget.currentuserids!
+                          .map((teamId) => teamId.split('(')[0])
+                          .toList(), // Extracting team ID before '('
+                    ),
+                  ),
+                  (route) => false, // Removes all previous routes.
+                );
+              }
             }
-          }
-        });
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          surfaceTintColor: const Color(0xff140B40),
-          backgroundColor: const Color(0xff140B40),
-          elevation: 0,
-          leading: InkWell(
-              onTap: () async {
-                if (team1PlayerCount > 0 || team2PlayerCount > 0) {
-                  await _showExitConfirmationDialog(context);
-                } else {
-                  Navigator.pop(context);
-                }
-              },
-              child: const Icon(
-                Icons.keyboard_backspace,
-                size: 30,
-                color: Colors.white,
-              )),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              AppBarText(color: Colors.white, text: "Create Team"),
-              FutureBuilder<PlayerModel?>(
-                future: _futureData,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Small3Text(color: Colors.white, text: "Loading...");
-                  } else if (snapshot.hasError) {
-                    return Small3Text(
-                        color: Colors.white, text: "Error loading time");
-                  } else if (snapshot.hasData) {
-                    final data = snapshot.data;
-                    final remaining = formatRemainingTime(remainingTime);
-                    return Small3Text(color: Colors.white, text: remaining);
+          });
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            surfaceTintColor: const Color(0xff140B40),
+            backgroundColor: const Color(0xff140B40),
+            elevation: 0,
+            leading: InkWell(
+                onTap: () async {
+                  if (team1PlayerCount > 0 || team2PlayerCount > 0) {
+                    await _showExitConfirmationDialog(context);
                   } else {
-                    return Small3Text(
-                        color: Colors.white, text: "No data available");
+                    Navigator.pop(context);
                   }
                 },
+                child: const Icon(
+                  Icons.keyboard_backspace,
+                  size: 30,
+                  color: Colors.white,
+                )),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AppBarText(color: Colors.white, text: "Create Team"),
+                FutureBuilder<PlayerModel?>(
+                  future: _futureData,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Small3Text(color: Colors.white, text: "Loading...");
+                    } else if (snapshot.hasError) {
+                      return Small3Text(
+                          color: Colors.white, text: "Error loading time");
+                    } else if (snapshot.hasData) {
+                      final data = snapshot.data;
+                      final remaining = formatRemainingTime(remainingTime);
+                      return Small3Text(color: Colors.white, text: remaining);
+                    } else {
+                      return Small3Text(
+                          color: Colors.white, text: "No data available");
+                    }
+                  },
+                ),
+              ],
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PointSystumScreen(),
+                        ));
+                  },
+                  child: Container(
+                    height: 22,
+                    width: 22,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(17),
+                        border: Border.all(width: 0.8, color: Colors.white)),
+                    child: const Center(
+                      child: Text(
+                        "P",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 15),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
+          body: FutureBuilder<PlayerModel?>(
+            future: _futureData,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    color: const Color(0xffF0F1F5),
+                    child: const Center(child: CircularProgressIndicator()));
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || teamLogos.isEmpty) {
+                return const Center(child: Text('No data available'));
+              } else {
+                return SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    color: const Color(0xffF0F1F5),
+                    child: Stack(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              height: 160,
+                              width: MediaQuery.of(context).size.width,
+                              decoration:
+                                  const BoxDecoration(color: Color(0xff140B40)),
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Text(
+                                    "Maximum 10 players from one team",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: 11,
+                                            itemBuilder: (context, index) {
+                                              return Container(
+                                                height: 20,
+                                                width: 20,
+                                                margin: const EdgeInsets.only(
+                                                    right: 2),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      selectedCount >= index + 1
+                                                          ? Colors.white
+                                                          : Colors.grey,
+                                                  borderRadius:
+                                                      BorderRadius.circular(3),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            await _showPlayerRemoveDialougeBox(
+                                                context);
+                                          },
+                                          child: Container(
+                                            height: 20,
+                                            width: 20,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: Colors.white)),
+                                            child: const Center(
+                                                child: Icon(
+                                              Icons.remove,
+                                              color: Colors.white,
+                                              size: 16,
+                                            )),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 22, vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Credits Left",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            Text(
+                                              "100",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 48,
+                                          width: 1,
+                                          color: Colors.grey.shade300,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 20,
+                                                  height: 13,
+                                                  child: teamLogos.isNotEmpty
+                                                      ? Image.network(
+                                                          teamLogos[0].teamLogo,
+                                                          fit: BoxFit.cover,
+                                                          errorBuilder: (context,
+                                                                  error,
+                                                                  stackTrace) =>
+                                                              const Icon(
+                                                                  Icons.error),
+                                                        )
+                                                      : Container(),
+                                                ),
+                                                const SizedBox(
+                                                  width: 8,
+                                                ),
+                                                Text(
+                                                  "${teamLogos[0].teamShortName} - $team1PlayerCount",
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 20,
+                                                  height: 13,
+                                                  child: teamLogos.length > 1
+                                                      ? Image.network(
+                                                          teamLogos[1].teamLogo,
+                                                          fit: BoxFit.cover,
+                                                          errorBuilder: (context,
+                                                                  error,
+                                                                  stackTrace) =>
+                                                              const Icon(
+                                                                  Icons.error),
+                                                        )
+                                                      : Container(),
+                                                ),
+                                                const SizedBox(
+                                                  width: 8,
+                                                ),
+                                                Text(
+                                                  "${teamLogos[1].teamShortName} - $team2PlayerCount",
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 44,
+                                          width: 1,
+                                          color: Colors.grey.shade300,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              "Players",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            Text(
+                                              "$selectedCount/11",
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TabBar(
+                                controller: _tabController,
+                                indicatorSize: TabBarIndicatorSize.label,
+                                indicatorColor: const Color(0xff140B40),
+                                labelColor: const Color(0xff140B40),
+                                unselectedLabelColor: Colors.grey,
+                                tabs: [
+                                  Tab(text: 'WK($wicketKeeperCount)'),
+                                  Tab(text: 'BAT($batsmanCount)'),
+                                  Tab(text: 'AR($allrounderCount)'),
+                                  Tab(text: 'BOWL($bowlerCount)'),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 15, right: 15, bottom: 1),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    "Selected By",
+                                    style: TextStyle(
+                                        fontSize: 13, color: Colors.grey),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width / 10,
+                                  ),
+                                  const Text(
+                                    "Points",
+                                    style: TextStyle(
+                                        fontSize: 13, color: Colors.grey),
+                                  ),
+                                  const Row(
+                                    children: [
+                                      Text(
+                                        "Ceadit",
+                                        style: TextStyle(
+                                            fontSize: 13, color: Colors.grey),
+                                      ),
+                                      SizedBox(width: 3),
+                                      Icon(
+                                        Icons.arrow_downward,
+                                        size: 13,
+                                        color: Colors.grey,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Expanded(
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  buildTabContent(
+                                      isSelectedListWK, 'Wicket Keeper'),
+                                  buildTabContent(isSelectedListBAT, 'Batsman'),
+                                  buildTabContent(
+                                      isSelectedListAR, 'All Rounder'),
+                                  buildTabContent(isSelectedListBOWL, 'Bowler'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+          bottomNavigationBar: Container(
+            padding: EdgeInsets.all(20.w),
+            color: Colors.white,
+            child: InkWell(
+              onTap: () {
+                int wicketKeepers =
+                    isSelectedListWK.where((isSelected) => isSelected).length;
+                int batsmen =
+                    isSelectedListBAT.where((isSelected) => isSelected).length;
+                int allrounders =
+                    isSelectedListAR.where((isSelected) => isSelected).length;
+                int bowlers =
+                    isSelectedListBOWL.where((isSelected) => isSelected).length;
+                print('Wicket Keepers: $wicketKeepers');
+                print('Batsmen: $batsmen');
+                print('All Rounders: $allrounders');
+                print('Bowlers: $bowlers');
+                print('Selected Count: $selectedCount');
+                setState(() {
+                  if (wicketKeepers < 1 ||
+                      batsmen < 1 ||
+                      allrounders < 1 ||
+                      bowlers < 1) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Center(
+                            child: Text(
+                                'Please select at least one player from each role.')),
+                      ),
+                    );
+                  } else if (selectedCount == 11) {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const PointSystumScreen(),
-                      ));
-                },
-                child: Container(
-                  height: 22,
-                  width: 22,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(17),
-                      border: Border.all(width: 0.8, color: Colors.white)),
-                  child: const Center(
-                    child: Text(
-                      "P",
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        body: FutureBuilder<PlayerModel?>(
-          future: _futureData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  color: const Color(0xffF0F1F5),
-                  child: const Center(child: CircularProgressIndicator()));
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || teamLogos.isEmpty) {
-              return const Center(child: Text('No data available'));
-            } else {
-              return SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  color: const Color(0xffF0F1F5),
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            height: 160,
-                            width: MediaQuery.of(context).size.width,
-                            decoration:
-                                const BoxDecoration(color: Color(0xff140B40)),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const Text(
-                                  "Maximum 10 players from one team",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        height: 20,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: 11,
-                                          itemBuilder: (context, index) {
-                                            return Container(
-                                              height: 20,
-                                              width: 20,
-                                              margin: const EdgeInsets.only(
-                                                  right: 2),
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    selectedCount >= index + 1
-                                                        ? Colors.white
-                                                        : Colors.grey,
-                                                borderRadius:
-                                                    BorderRadius.circular(3),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          await _showPlayerRemoveDialougeBox(
-                                              context);
-                                        },
-                                        child: Container(
-                                          height: 20,
-                                          width: 20,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                  color: Colors.white)),
-                                          child: const Center(
-                                              child: Icon(
-                                            Icons.remove,
-                                            color: Colors.white,
-                                            size: 16,
-                                          )),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 22, vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Credits Left",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey),
-                                          ),
-                                          Text(
-                                            "100",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        height: 48,
-                                        width: 1,
-                                        color: Colors.grey.shade300,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 20,
-                                                height: 13,
-                                                child: teamLogos.isNotEmpty
-                                                    ? Image.network(
-                                                        teamLogos[0].teamLogo,
-                                                        fit: BoxFit.cover,
-                                                        errorBuilder: (context,
-                                                                error,
-                                                                stackTrace) =>
-                                                            const Icon(
-                                                                Icons.error),
-                                                      )
-                                                    : Container(),
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                "${teamLogos[0].teamShortName} - $team1PlayerCount",
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Colors.white),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 20,
-                                                height: 13,
-                                                child: teamLogos.length > 1
-                                                    ? Image.network(
-                                                        teamLogos[1].teamLogo,
-                                                        fit: BoxFit.cover,
-                                                        errorBuilder: (context,
-                                                                error,
-                                                                stackTrace) =>
-                                                            const Icon(
-                                                                Icons.error),
-                                                      )
-                                                    : Container(),
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                "${teamLogos[1].teamShortName} - $team2PlayerCount",
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Colors.white),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        height: 44,
-                                        width: 1,
-                                        color: Colors.grey.shade300,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text(
-                                            "Players",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey),
-                                          ),
-                                          Text(
-                                            "$selectedCount/11",
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TabBar(
-                              controller: _tabController,
-                              indicatorSize: TabBarIndicatorSize.label,
-                              indicatorColor: const Color(0xff140B40),
-                              labelColor: const Color(0xff140B40),
-                              unselectedLabelColor: Colors.grey,
-                              tabs: [
-                                Tab(text: 'WK($wicketKeeperCount)'),
-                                Tab(text: 'BAT($batsmanCount)'),
-                                Tab(text: 'AR($allrounderCount)'),
-                                Tab(text: 'BOWL($bowlerCount)'),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 15, right: 15, bottom: 1),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Selected By",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey),
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width / 10,
-                                ),
-                                const Text(
-                                  "Points",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey),
-                                ),
-                                const Row(
-                                  children: [
-                                    Text(
-                                      "Ceadit",
-                                      style: TextStyle(
-                                          fontSize: 13, color: Colors.grey),
-                                    ),
-                                    SizedBox(width: 3),
-                                    Icon(
-                                      Icons.arrow_downward,
-                                      size: 13,
-                                      color: Colors.grey,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Expanded(
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                buildTabContent(
-                                    isSelectedListWK, 'Wicket Keeper'),
-                                buildTabContent(isSelectedListBAT, 'Batsman'),
-                                buildTabContent(
-                                    isSelectedListAR, 'All Rounder'),
-                                buildTabContent(isSelectedListBOWL, 'Bowler'),
-                              ],
-                            ),
-                          ),
-                        ],
+                        builder: (context) => CreateTeamNext(
+                          isFromContestScreen: widget.isContestScreen,
+                          isFromJoinContest: widget.isJoinContestScreen,
+                          isFromMyTeam: widget.isMyTeam,
+                          time: formatRemainingTime(remainingTime),
+                          selectedPlayers: selectedPlayers,
+                          selectedPlayersWithTeams:
+                              selectedPlayersWithTeams, // Pass the selected players with team short names
+                          cId: widget.contestID,
+                          amount: widget.amount,
+                          firstMatch: widget.firstMatch,
+                          secMatch: widget.secMatch,
+                          currentuserteamids: widget.currentuserids,
+                          Id: widget.Id,
+                          //point:,
+                          matchName: widget.matchName,
+                          team1: team1name,
+                          team2: team2name,
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              );
-            }
-          },
-        ),
-        bottomNavigationBar: Container(
-          padding: EdgeInsets.all(20.w),
-          color: Colors.white,
-          child: InkWell(
-            onTap: () {
-              int wicketKeepers =
-                  isSelectedListWK.where((isSelected) => isSelected).length;
-              int batsmen =
-                  isSelectedListBAT.where((isSelected) => isSelected).length;
-              int allrounders =
-                  isSelectedListAR.where((isSelected) => isSelected).length;
-              int bowlers =
-                  isSelectedListBOWL.where((isSelected) => isSelected).length;
-              print('Wicket Keepers: $wicketKeepers');
-              print('Batsmen: $batsmen');
-              print('All Rounders: $allrounders');
-              print('Bowlers: $bowlers');
-              print('Selected Count: $selectedCount');
-              setState(() {
-                if (wicketKeepers < 1 ||
-                    batsmen < 1 ||
-                    allrounders < 1 ||
-                    bowlers < 1) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Center(
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Center(
                           child: Text(
-                              'Please select at least one player from each role.')),
-                    ),
-                  );
-                } else if (selectedCount == 11) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateTeamNext(
-                        isFromContestScreen: widget.isContestScreen,
-                        isFromJoinContest: widget.isJoinContestScreen,
-                        isFromMyTeam: widget.isMyTeam,
-                        time: formatRemainingTime(remainingTime),
-                        selectedPlayers: selectedPlayers,
-                        selectedPlayersWithTeams:
-                            selectedPlayersWithTeams, // Pass the selected players with team short names
-                        cId: widget.contestID,
-                        amount: widget.amount,
-                        firstMatch: widget.firstMatch,
-                        secMatch: widget.secMatch,
-                        currentuserteamids: widget.currentuserids,
-                        Id: widget.Id,
-                        //point:,
-                        matchName: widget.matchName,
-                        team1: team1name,
-                        team2: team2name,
+                              "Selected $selectedCount players. Please select 11 players."),
+                        ),
                       ),
+                    );
+                  }
+                });
+              },
+              child: Container(
+                height: 47,
+                width: 166,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(9),
+                  color: selectedCount == 11
+                      ? const Color(0xff140B40)
+                      : Colors.grey.shade300,
+                ),
+                child: const Center(
+                  child: Text(
+                    "Next",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
                     ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Center(
-                        child: Text(
-                            "Selected $selectedCount players. Please select 11 players."),
-                      ),
-                    ),
-                  );
-                }
-              });
-            },
-            child: Container(
-              height: 47,
-              width: 166,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                color: selectedCount == 11
-                    ? const Color(0xff140B40)
-                    : Colors.grey.shade300,
-              ),
-              child: const Center(
-                child: Text(
-                  "Next",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

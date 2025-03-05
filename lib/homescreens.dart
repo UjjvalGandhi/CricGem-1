@@ -1785,7 +1785,8 @@ class _HomeScreensState extends State<HomeScreens> {
                                                     ),
                                                   ),
                                                   child: Text(
-                                                    "Indian Premier League",
+                                                    upcoming.matchDetails!.matchName! ?? '',
+                                                    // "Indian Premier League",
                                                     style: TextStyle(
                                                       fontSize: 12.sp,
                                                       // Responsive font size

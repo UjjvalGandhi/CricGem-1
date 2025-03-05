@@ -30,6 +30,7 @@ class LeagueProvider with ChangeNotifier {
           "Authorization": "$token",
         },
       );
+      print("token : $token");
 
       if (response.statusCode == 200) {
         _data = HomeLeagModel.fromJson(jsonDecode(response.body));
