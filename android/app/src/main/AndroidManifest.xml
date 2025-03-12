@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />-->
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.AUDIO_CAPTURE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -21,7 +25,7 @@
     <application
         android:enableOnBackInvokedCallback="true"
         android:usesCleartextTraffic="true"
-        android:label="batting_app"
+        android:label="CricGem"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

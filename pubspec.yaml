@@ -72,6 +72,9 @@ dependencies:
   hexcolor: ^3.0.1
   flutter_launcher_icons: ^0.14.3
   change_app_package_name: ^1.5.0
+  geolocator: ^13.0.2
+  upgrader: ^11.3.1
+  flutter_native_splash: ^2.4.4
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +92,10 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/icon/icon.png"  # Path to your icon file
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/icon/splash.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

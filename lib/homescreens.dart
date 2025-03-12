@@ -1524,6 +1524,18 @@ class _HomeScreensState extends State<HomeScreens> {
                       print('upcoming is done');
                     }
                   }
+                  if (leagueMatches.isEmpty && worldcupallmatces.isEmpty && upcomingMatch.isEmpty && myMatch.isEmpty) {
+                    return Center(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("No Matches Available..☺️"),
+                            SizedBox(height: 5,),
+                            Text("We Update You Soon!!!!")
+                          ],
+                      ),
+                    );
+                  }
                   return SingleChildScrollView(
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),

@@ -459,7 +459,7 @@ class _SignUpNextScreenState extends State<SignUpNextScreen> {
                         }
                       } catch (e) {
                         // Handle errors (e.g., invalid mobile number or network issues)
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        ScaffoldMessenger. of(context).showSnackBar(
                           SnackBar(content: Text('Error: ${e.toString()}')),
                         );
                       }

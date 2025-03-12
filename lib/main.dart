@@ -1,6 +1,7 @@
 import 'package:batting_app/firebase_options.dart';
 import 'package:batting_app/screens/socket_service.dart';
 import 'package:batting_app/services/fcm_service.dart';
+import 'package:batting_app/services/get_server_key.dart';
 import 'package:batting_app/services/notification_service.dart';
 import 'package:batting_app/widget/balance_notifire.dart';
 import 'package:batting_app/widget/contestprovider.dart';
@@ -23,6 +24,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:batting_app/screens/bnb.dart';
 import 'package:batting_app/screens/bording/on_bordind_one.dart';
+import 'package:upgrader/upgrader.dart';
+
 
 import 'db/app_db.dart'; // Import your SocketService
 
@@ -38,6 +41,9 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   final BalanceNotifier balanceNotifier = BalanceNotifier("0");
   WidgetsFlutterBinding.ensureInitialized();
+  await Upgrader.clearSavedSettings();
+
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -59,12 +65,17 @@ void main() async {
 
 
 
+
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
   final String? token = await AppDB.appDB.getToken();
+
+
   // await NotificationService().initNotification();
+
 
   runApp(
     // ChangeNotifierProvider(
@@ -99,6 +110,8 @@ class MyApp extends StatefulWidget {
 
   const MyApp({super.key, this.token});
 
+
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -127,6 +140,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       print('Initializing NotificationService...');
       Provider.of<NotificationService>(context, listen: false).initNotification(context);
@@ -135,23 +149,32 @@ class _MyAppState extends State<MyApp> {
       Provider.of<SocketService>(context, listen: false).initializeWithContext(context);
     });
 
-    return ScreenUtilInit(
-      designSize: const Size(393, 852),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_, context) {
-        return MaterialApp(
-          navigatorKey: navigatorKey,
-          //builder: EasyLoading.init(),
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: widget.token != null ? const Bottom() : const OnboardingScreen(),
-        );
-      },
+    final Upgrader upgrader = Upgrader(
+      debugLogging: true,
+
+    );
+
+    return UpgradeAlert(
+      dialogStyle: UpgradeDialogStyle.cupertino,
+      upgrader: upgrader,
+      child: ScreenUtilInit(
+        designSize: const Size(393, 852),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_, context) {
+          return MaterialApp(
+            navigatorKey: navigatorKey,
+            //builder: EasyLoading.init(),
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            home: widget.token != null ? const Bottom() : const OnboardingScreen(),
+          );
+        },
+      ),
     );
   }
 }
