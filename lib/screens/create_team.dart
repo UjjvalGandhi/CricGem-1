@@ -892,7 +892,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen>
                               ),
                             ),
                             Container(
-                              height: 48,
+                              height: 50,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
@@ -975,7 +975,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen>
             },
           ),
           bottomNavigationBar: Container(
-            padding: EdgeInsets.all(20.w),
+            padding: EdgeInsets.all(15.w,),
             color: Colors.white,
             child: InkWell(
               onTap: () {
@@ -1042,8 +1042,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen>
                 });
               },
               child: Container(
-                height: 47,
-                width: 166,
+                height: 40,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(9),
                   color: selectedCount == 11
@@ -1112,9 +1111,9 @@ class _CreateTeamScreenState extends State<CreateTeamScreen>
           }
 
           // Calculate dynamic height
-          final double baseHeight = MediaQuery.of(context).size.height * 0.50.h;
+          final double baseHeight = MediaQuery.of(context).size.height * 0.50;
           final double bottomPadding =
-              MediaQuery.of(context).padding.bottom - 22.h;
+              MediaQuery.of(context).padding.bottom - 22;
           final double containerHeight = baseHeight + bottomPadding;
 
           double availableHeight = MediaQuery.of(context).size.height -
@@ -1125,11 +1124,12 @@ class _CreateTeamScreenState extends State<CreateTeamScreen>
             child: Column(
               children: [
                 SizedBox(
-                  height:
-                      availableHeight - 270.h, // Dynamically calculated height
+                  //height: availableHeight - 380, // Dynamically calculated height
+                  height: availableHeight - 310, // Dynamically calculated height
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight + 5),
                     itemCount: interleavedPlayers.length,
                     itemBuilder: (context, index) {
                       if (index >= isSelectedList.length) {

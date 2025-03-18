@@ -118,7 +118,7 @@ class Match {
   final String? city;
   final String? state;
   final String? country;
-  final int? megaprice;
+  final num? megaprice;
   final TeamDetails? team1Details;
   final TeamDetails? team2Details;
 

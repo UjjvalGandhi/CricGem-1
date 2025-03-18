@@ -1652,20 +1652,10 @@ class _SettingScreenState extends State<SettingScreen> {
 
   Future<void> _logoutAndNavigate(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token'); // Adjust the key as needed
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-      (Route<dynamic> route) =>
-          false, // This line ensures all previous routes are removed
-    );
-    //final prefs = await SharedPreferences.getInstance();
     try {
       // Construct notification body with both amounts
       String notificationBody =
           "Welcome back! ";
-
 
       await SendNotificationService.sendNotifcationUsingApi(
         title: "See you soon!!",
@@ -1678,6 +1668,18 @@ class _SettingScreenState extends State<SettingScreen> {
     } catch (e) {
       print("❌Logout Error sending notification: $e");
     }
+
+
+    await prefs.remove('token'); // Adjust the key as needed
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      (Route<dynamic> route) =>
+          false, // This line ensures all previous routes are removed
+    );
+    //final prefs = await SharedPreferences.getInstance();
+
   }
 }
 // Padding(

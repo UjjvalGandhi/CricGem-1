@@ -198,7 +198,7 @@ class _ContestscrennState extends State<Contestscrenn> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    formatMegaPrice(prizePool),
+                                                    formatMegaPrice(prizePool.toInt()),
                                                     style: const TextStyle(
                                                       color: Color(0xff140B40),
                                                       fontWeight: FontWeight.w600,

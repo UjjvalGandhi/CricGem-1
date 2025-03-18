@@ -92,7 +92,7 @@ class _AppbarscreenState extends State<Appbarscreen> {
                             ),
                           ),
                         ),
-                        Text("Crick",style: TextStyle(color: Colors.white,fontSize: 22,fontStyle: FontStyle.italic,),),
+                        Text("Cric",style: TextStyle(color: Colors.white,fontSize: 22,fontStyle: FontStyle.italic,),),
 
                         Text("Gem",style: TextStyle(color: HexColor("E6BE8A"),fontSize: 22,fontStyle: FontStyle.italic),),
                       ],

@@ -320,7 +320,7 @@ class _HomeScreensState extends State<HomeScreens> {
                                 color: Color(0xffD4AF37),
                               ),
                             ),
-                            PriceDisplay(price: match.megaprice!),
+                            PriceDisplay(price: match.megaprice!.toInt()),
                             // Assuming match.megaprice is an int
                           ],
                         ),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:batting_app/firebase_options.dart';
 import 'package:batting_app/screens/socket_service.dart';
 import 'package:batting_app/services/fcm_service.dart';
@@ -43,7 +45,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Upgrader.clearSavedSettings();
 
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    FlutterError.presentError(details);
+    FlutterError.dumpErrorToConsole(details);
+    print(details.exceptionAsString());
+    // await SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    //   DeviceOrientation.portraitDown,
+    // ]);
+  };
 
+  PlatformDispatcher.instance.onError = (error, stack) {
+    print('Caught Dart Error: $error');
+    print('Stack trace: $stack');
+    return true;
+  };
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -62,6 +78,8 @@ void main() async {
     bool? granted = await androidImplementation.requestNotificationsPermission();
     print('Notification permission granted: $granted');
   }
+
+
 
 
 

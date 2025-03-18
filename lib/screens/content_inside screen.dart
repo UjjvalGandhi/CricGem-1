@@ -597,7 +597,7 @@ class _ContentInsideState extends State<ContentInside>
                                           CrossAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          "Prize Pool",
+                                          "Price Pool",
                                           style: TextStyle(
                                             color: Colors.black45,
                                             fontSize: 12,
@@ -877,7 +877,7 @@ class _ContentInsideState extends State<ContentInside>
                                             final first = range.first;
                                             final last = range.last;
                                             if (first == last) {
-                                              rangeText = '$first';
+                                              rangeText = '#$first';
                                             } else {
                                               rangeText = "#$first - $last";
                                             }

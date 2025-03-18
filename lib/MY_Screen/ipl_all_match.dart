@@ -487,7 +487,7 @@ class _IplAllMatchState extends State<IplAllMatch> {
                                             ),
                                             PriceDisplay(
                                                 price: match
-                                                    .megaPrice!), // Assuming match.megaprice is an int
+                                                    .megaPrice!.toInt()), // Assuming match.megaprice is an int
                                           ],
                                         ),
                                         const SizedBox(height: 8),

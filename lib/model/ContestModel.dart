@@ -104,7 +104,7 @@ class Contest {
   String id;
   String matchId;
   String contestTypeId;
-  int pricePool;
+  num pricePool;
   int entryFees;
   int totalParticipant;
   int maxTeamPerUser;
